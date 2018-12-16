@@ -1,0 +1,33 @@
+<div class="page-header">
+  <%= link_to new_user_context_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New User context
+  <% end %>
+  <h1>Listing user_contexts</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Value</th>
+            <th>Context</th>
+            <th>User</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @user_contexts) do |user_context| %>
+            <td><%= user_context.value %></td>
+            <td><%= user_context.context %></td>
+            <td><%= user_context.user %></td>
+            <td><%= link_to 'Show', user_context %></td>
+        <td><%= link_to 'Edit', edit_user_context_path(user_context) %></td>
+        <td><%= link_to 'Destroy', user_context, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

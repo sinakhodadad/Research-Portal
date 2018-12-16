@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-md-offset-3 col-md-6">
+        <div class="portlet light bordered">
+            <div class="portlet-title">
+                <div class="caption font-red-sunglo">
+                    <i class="icon-settings font-red-sunglo"></i>
+                    <span class="caption-subject bold uppercase"> Log in</span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                    <div class="form-body">
+
+                        <div class="form-group">
+                            <%= f.label :email %>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                                <%= f.email_field :email, autofocus: true, class: "form-control" %>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :password %>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                                <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <% if devise_mapping.rememberable? -%>
+                                <label class="checkboxs">
+                                    <span>
+                                    <%= f.check_box :remember_me %>
+                                    </span>
+                                    <%= f.label :remember_me %>
+                                </label>
+                            <% end %>
+
+                            <%= f.submit "Log in", class: "btn green pull-right" %>
+                        </div>
+                        <div class="form-group">
+                            <%= render "devise/shared/links" %>
+                        </div>
+                    </div>
+                <% end %>
+
+            </div>
+        </div>
+    </div>
+</div>
+

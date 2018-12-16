@@ -1,0 +1,242 @@
+<% is_admin_page = (controller.controller_name == 'admin' ||
+        controller.controller_name == 'user_contexts' ||
+        controller.controller_name == 'contexts')
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>System Verification Lab</title>
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="/assets/layouts/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css"/>
+    <link href="/assets/layouts/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="/assets/layouts/layout5/css/layout.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/layouts/layout5/css/custom.min.css" rel="stylesheet" type="text/css"/>
+    <!-- END THEME LAYOUT STYLES -->
+    <script src="/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet"/>
+    <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <style>
+        .field_with_errors {
+            display: flex;
+        }
+    </style>
+    <script>
+        function clickMenu(thisMenu) {
+            var menu = $('#menus');
+            menu.find('li.active').removeClass('active');
+            menu.find('li.open').removeClass('open');
+            menu.find('li.selected').removeClass('selected');
+
+            thisMenu.addClass(' active open selected');
+        }
+    </script>
+</head>
+<body class="page-container-bg-solid">
+<div class="wrapper">
+    <!-- BEGIN HEADER -->
+    <header class="page-header">
+        <nav class="navbar mega-menu" role="navigation">
+            <div class="container-fluid">
+                <div class="clearfix navbar-fixed-top">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                                <span class="toggle-icon">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </span>
+                    </button>
+                    <!-- End Toggle Button -->
+                    <!-- BEGIN LOGO -->
+                    <a id="index" class="page-logo" href="index.html">
+                        <img src="/assets/layouts/layout5/img/logo.png" alt="Logo"> </a>
+                    <!-- END LOGO -->
+                    <div class="topbar-actions">
+                        <!-- BEGIN USER PROFILE -->
+                        <% if user_signed_in? %>
+                            <div class="btn-group-img btn-group">
+                                <button data-close-others="true" data-hover="dropdown" data-toggle="dropdown" class="btn btn-sm dropdown-toggle" type="button" aria-expanded="false">
+                                    <span>Hi, <%= current_user.first_name %></span>
+                                    <% if not current_user.avatar.nil? %>
+
+                                        <img alt="" src="<%= current_user.avatar.url(:thumb) %>"/></button>
+                                    <% else %>
+
+                                        <img alt="" src="/no_avatar.jpg"/></button>
+                                    <% end %>
+                                    <ul role="menu" class="dropdown-menu-v2">
+                                        <li>
+                                            <a href="/myProfile">
+                                                <i class="icon-user"></i> My Profile
+                                            </a>
+                                        </li>
+                                        <!--<li>-->
+                                        <!--<a href="app_calendar.html">-->
+                                        <!--<i class="icon-calendar"></i> My Calendar </a>-->
+                                        <!--</li>-->
+                                        <!--<li>-->
+                                        <!--<a href="app_inbox.html">-->
+                                        <!--<i class="icon-envelope-open"></i> My Inbox-->
+                                        <!--<span class="badge badge-danger"> 3 </span>-->
+                                        <!--</a>-->
+                                        <!--</li>-->
+                                        <!--<li>-->
+                                        <!--<a href="app_todo_2.html">-->
+                                        <!--<i class="icon-rocket"></i> My Tasks-->
+                                        <!--<span class="badge badge-success"> 7 </span>-->
+                                        <!--</a>-->
+                                        <!--</li>-->
+                                        <!--<li class="divider"></li>-->
+                                        <!--<li>-->
+                                        <!--<a href="page_user_lock_1.html">-->
+                                        <!--<i class="icon-lock"></i> Lock Screen </a>-->
+                                        <!--</li>-->
+                                        <li>
+                                            <%= link_to edit_user_registration_path do %>
+                                                <i class="icon-pencil"></i> Edit Profile
+                                            <% end %>
+                                        </li>
+                                        <li>
+                                            <%= link_to destroy_user_session_path, :method => 'delete' do %>
+                                                <i class="icon-key"></i> Log Out
+                                            <% end %>
+                                        </li>
+                                    </ul>
+                                    </div>
+                            <!-- END USER PROFILE -->
+                        <% else %>
+                            <div class="btn-group-red btn-group">
+                                <%= link_to "Sign in", new_user_session_path, class: "navbar-brand" %>
+                            </div>
+                            <div class="btn-group-red btn-group">
+                                <%= link_to "Sign up", new_user_registration_path, class: "navbar-brand" %>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+                <!-- BEGIN HEADER MENU -->
+                <div class="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav" id="menus">
+                        <li class="dropdown dropdown-fw
+                            <% if controller.controller_name == 'news' %>  active open selected
+                            <% end %> ">
+                            <a href="/" class="text-uppercase">
+                                <i class="icon-home"></i> Home </a>
+                        </li>
+                        <li class="dropdown dropdown-fw
+                            <% if controller.controller_name == 'projects' %>  active open selected
+                            <% end %> ">
+                            <%= link_to projects_path, class: "text-uppercase" do %>
+                                <i class="icon-puzzle"></i> Projects
+                            <% end %>
+
+                        </li>
+                        <li class="dropdown dropdown-fw
+                            <% if controller.controller_name == 'publications' %>  active open selected
+                            <% end %> ">
+                            <%= link_to publications_path, class: "text-uppercase" do %>
+                                <i class="icon-puzzle"></i> Publications
+                            <% end %>
+                        </li>
+                        <li class="dropdown dropdown-fw
+                            <% if controller.controller_name == 'profiles' %>  active open selected
+                            <% end %> ">
+                            <%= link_to profiles_path, class: "text-uppercase" do %>
+                                <i class="icon-puzzle"></i> Members
+                            <% end %>
+                        </li>
+                        <% if !current_user.nil? && current_user.has_role?("admin") %>
+                            <li class="dropdown dropdown-fw
+                            <% if is_admin_page %>  active open selected
+                            <% end %> ">
+                                <%= link_to admin_members_path, class: "text-uppercase" do %>
+                                    <i class="icon-puzzle"></i> Admin
+                                <% end %>
+                                <% if is_admin_page %>
+
+                                    <ul class="dropdown-menu dropdown-menu-fw">
+                                        <li>
+                                            <%= link_to admin_members_path, class: "text-uppercase" do %>
+                                                <i class="icon-puzzle"></i> Members
+                                            <% end %>
+                                        </li>
+                                        <li>
+                                            <%= link_to contexts_path, class: "text-uppercase" do %>
+                                                <i class="icon-puzzle"></i> Context
+                                            <% end %>
+                                        </li>
+                                        <li>
+                                            <%= link_to add_users_path, class: "text-uppercase" do %>
+                                                <i class="icon-puzzle"></i> Add User
+                                            <% end %>
+                                        </li>
+                                        
+                                        <li>
+                                            <%= link_to sponsors_path, class: "text-uppercase" do %>
+                                                <i class="icon-puzzle"></i> New Sponsors
+                                            <% end %>
+                                        </li>
+                                    </ul>
+                                <% end %>
+                            </li>
+                        <% end %>
+                    </ul>
+                </div>
+                <!-- END HEADER MENU -->
+            </div>
+            <!--/container-->
+        </nav>
+    </header>
+    <!-- END HEADER -->
+    <div class="container-fluid">
+        <div class="page-content"
+             style="background: #eef1f5 none repeat scroll 0 0; padding-top: 20px; <%if is_admin_page%> margin-top:72px;
+                 <% end %>">
+            <% flash.each do |name, msg| %>
+                <%= content_tag :div, class: "alert alert-#{ name == :error ? "danger" : "success" } alert-dismissable", role: "alert" do %>
+                    <button type="button" class="close" data-dismiss="alert">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <%= msg %>
+                <% end %>
+            <% end %>
+
+            <%= yield %>
+        </div>
+    </div>
+
+</div>
+
+<!-- BEGIN CORE PLUGINS -->
+<script src="/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<!-- END CORE PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="/assets/global/scripts/app.min.js" type="text/javascript"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+<script src="/assets/layouts/layout5/scripts/layout.min.js" type="text/javascript"></script>
+<script src="/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+<!-- END THEME LAYOUT SCRIPTS -->
+</body>
+</html>

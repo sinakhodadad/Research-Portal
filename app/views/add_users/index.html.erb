@@ -1,0 +1,35 @@
+<div class="page-header">
+  <%= link_to new_add_user_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Add user
+  <% end %>
+  <h1>Listing new users</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Family</th>
+            <th>Role</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @add_users) do |add_user| %>
+            <td><%= add_user.email %></td>
+            <td><%= add_user.name %></td>
+            <td><%= add_user.family %></td>
+            <td><%= add_user.role %></td>
+            <td><%= link_to 'Show', add_user %></td>
+        <td><%= link_to 'Edit', edit_add_user_path(add_user) %></td>
+        <td><%= link_to 'Destroy', add_user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

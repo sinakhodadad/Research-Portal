@@ -1,0 +1,41 @@
+<div class="page-header">
+  <%= link_to new_publication_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Publication
+  <% end %>
+  <h1>Listing publications</h1>
+</div>
+
+<%= render 'publications/search_form' %>
+
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Title</th>
+            <th>Year</th>
+            <th>Volume</th>
+            <th colspan="2">Pages</th>
+            <th>Journal_Confrence</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @publications) do |publication| %>
+            <td><%= publication.title %></td>
+            <td><%= publication.year %></td>
+            <td><%= publication.pageend %></td>
+            <td><%= publication.page %></td>
+            <td><%= publication.volume %></td>
+            <td><%= publication.journal.name %></td>
+            <td><%= link_to 'Show', publication %></td>
+        <td><%= link_to 'Edit', edit_publication_path(publication) %></td>
+        <td><%= link_to 'Destroy', publication, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

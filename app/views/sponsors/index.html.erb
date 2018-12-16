@@ -1,0 +1,29 @@
+<div class="page-header">
+  <%= link_to new_sponsor_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Sponsor
+  <% end %>
+  <h1>Listing sponsors</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Name</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @sponsors) do |sponsor| %>
+            <td><%= sponsor.name %></td>
+            <td><%= link_to 'Show', sponsor %></td>
+        <td><%= link_to 'Edit', edit_sponsor_path(sponsor) %></td>
+        <td><%= link_to 'Destroy', sponsor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

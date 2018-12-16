@@ -1,0 +1,236 @@
+<div class="page-header">
+  <%= link_to profiles_path, class: 'btn btn-default' do %>
+      <span class="glyphicon glyphicon-list-alt"></span>
+      Back
+  <% end %>
+</div>
+<hr/>
+<!--
+<dl class="dl-horizontal">
+  <div class="form-horizontal">
+    <div class="form-group">
+      <div class="col-sm-2">
+        Projects
+      </div>
+      <div class="col-sm-10">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+              <th>title</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <%#= content_tag_for(:tr, @projects) do |project| %>
+                <td><%#= project.title %></td>
+                <td><%#= link_to 'Show', project %></td>
+            <%# end %>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</dl>
+
+<dl class="dl-horizontal">
+  <div class="form-horizontal">
+    <div class="form-group">
+      <div class="col-sm-2">
+        Publications
+      </div>
+      <div class="col-sm-10">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+              <th>title</th>
+              <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <%#= content_tag_for(:tr, @publications) do |publication| %>
+                <td><%#= publication.title %></td>
+                <td><%#= link_to 'Show', publication %></td>
+            <%# end %>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</dl>
+ -->
+
+ <link href="/assets/layouts/page/profile.css" rel="stylesheet"/>
+
+<!-- BEGIN PAGE BASE CONTENT -->
+<div class="row">
+  <div class="col-md-12">
+    <!-- BEGIN PROFILE SIDEBAR -->
+    <div class="profile-sidebar">
+      <!-- PORTLET MAIN -->
+      <div class="portlet light profile-sidebar-portlet bordered">
+        <!-- SIDEBAR USERPIC -->
+        <div class="profile-userpic">
+          <% if not @profile.avatar.nil? %>
+              <img src="<%= @profile.avatar.url(:medium) %>" class="img-responsive" alt="">
+          <% else %>
+              <img src="/no_avatar.jpg" class="img-responsive" alt="">
+
+          <% end %>
+        </div>
+
+        <!-- END SIDEBAR USERPIC -->
+        <!-- SIDEBAR USER TITLE -->
+        <div class="profile-usertitle">
+          <div class="profile-usertitle-name"> <%= @profile.full_name %></div>
+          <% if not @role.nil? %>
+              <div class="profile-usertitle-job"> <%= @role.name %></div>
+          <% end %>
+        </div>
+        <!-- END SIDEBAR USER TITLE -->
+      </div>
+      <!-- END PORTLET MAIN -->
+      <!-- PORTLET MAIN -->
+      <div class="portlet light bordered">
+        <!-- STAT -->
+        <div class="row list-separated profile-stat">
+          <div class="col-md-4 col-sm-4 col-xs-6">
+            <div class="uppercase profile-stat-title"> <%= @projects.count %></div>
+            <div class="uppercase profile-stat-text"> Projects</div>
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-6">
+            <div class="uppercase profile-stat-title"> <%= @publications.count %></div>
+            <div class="uppercase profile-stat-text"> Publications</div>
+          </div>
+        </div>
+        <!-- END STAT -->
+        <div>
+          <h4 class="profile-desc-title">Email:</h4>
+          <span class="profile-desc-text"> <%= @profile.email %></span>
+
+          <% if @profile.url %>
+          <h4 class="profile-desc-title">URL:</h4> 
+          <span class="profile-desc-text"> <%= @profile.url %></span> 
+          <% end %>
+
+
+          <h4 class="profile-desc-title">Contents:</h4>
+          <% @contents.each do |cn| %>
+          <p><span class="profile-desc-text"> <%= cn.post %></span></p>
+          <%end%>
+
+
+          <!--<div class="margin-top-20 profile-desc-link">
+            <i class="fa fa-globe"></i>
+            <h8><%#= @profile.bio %></h8>
+          </div>
+          <div class="margin-top-20 profile-desc-link">
+            <i class="fa fa-twitter"></i>
+            <a href="http://www.twitter.com/keenthemes/">@keenthemes</a>
+          </div>
+          <div class="margin-top-20 profile-desc-link">
+            <i class="fa fa-facebook"></i>
+            <a href="http://www.facebook.com/keenthemes/">keenthemes</a>
+          </div> -->
+        </div>
+      </div>
+      <!-- END PORTLET MAIN -->
+    </div>
+    <!-- END BEGIN PROFILE SIDEBAR -->
+    <!-- BEGIN PROFILE CONTENT -->
+    <div class="profile-content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="portlet light portlet-fit bordered">
+            <div class="portlet-title">
+              <div class="caption">
+                 <i class=""></i>
+                <span class="caption-subject bold font-green uppercase"> Publications</span>
+                <!-- <dt>Title:</dt> -->
+                <% @publications.each do |publication| %>
+                <hr/>
+                <i class="glyphicon glyphicon-pencil font-green"></i>
+                <span class= "small">
+
+                <% if publication.document.present? %>
+                  <% if publication.users.size == 1 %>
+                    <% publication.users.each do |pb|%>
+                      <%= pb.last_name %>
+                    <% end %>
+                    ,
+                    <%=link_to publication.title, publication.document.url %>
+                  <% else %>
+                    <% publication.users.each_with_index do |pb, index|%>
+                      <% if index != publication.users.size - 1 %>
+                        <%= pb.last_name %>
+                        &
+                      <% end %>
+                    <% end %>
+                    <%= publication.users.last.last_name %>,
+                    <%=link_to publication.title, publication.document.url %>
+
+                  <% end %>
+                <% else %>
+                  <% if publication.users.size == 1 %>
+                    <% publication.users.each do |pb|%>
+                      <%= pb.last_name %>
+                    <% end %>
+                    ,
+                    <%=link_to publication.title, publication %>
+                
+                  <% else %>
+                    <% publication.users.each_with_index do |pb, index|%>
+                      <% if index != publication.users.size - 1 %>
+                        <%= pb.last_name %>
+                        &
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                  <%= publication.users.last.last_name %>,
+                  <%=link_to publication.title, publication %>
+
+                <% end %>
+                
+
+                  
+                , Vol. <%= publication.volume %>, No. <%= publication.id %>, pp. <%= publication.page%>-<%= publication.pageend%>, <%= publication.year %> </span>
+
+               
+                <%end %>
+                
+                <!--<span class="caption-helper">user timeline</span>-->
+              </div>
+            </div>
+          </div>
+          <div class="portlet light portlet-fit bordered">
+            <div class="portlet-title">
+              <div class="caption">
+                 <i class=""></i>
+                <span class="caption-subject bold font-green uppercase"> Projects</span>
+                <!-- <dt>Title:</dt> -->
+                <% @projects.each do |project| %>
+                <hr/>
+                <i class="glyphicon glyphicon-pencil font-green"></i>
+                <span class="small"><%=link_to project.title, project%>,The goal for this project is: <%= project.goal %>, Duration for implementing this project is from <%= project.start_date %> to <%= project.end_time %>. </span>
+
+               
+                <%end %>
+                
+                <!--<span class="caption-helper">user timeline</span>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END PROFILE CONTENT -->
+  </div>
+</div>
+<!-- END PAGE BASE CONTENT -->

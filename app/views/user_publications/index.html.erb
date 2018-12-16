@@ -1,0 +1,31 @@
+<div class="page-header">
+  <%= link_to new_user_publication_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New User publication
+  <% end %>
+  <h1>Listing user_publications</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>User</th>
+            <th>Publication</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @user_publications) do |user_publication| %>
+            <td><%= user_publication.user_id %></td>
+            <td><%= user_publication.publication_id %></td>
+            <td><%= link_to 'Show', user_publication %></td>
+        <td><%= link_to 'Edit', edit_user_publication_path(user_publication) %></td>
+        <td><%= link_to 'Destroy', user_publication, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,122 @@
+<%= form_for(@publication, html: {class: "form-horizontal", role: "form"}) do |f| %>
+    <% if @publication.errors.any? %>
+        <div class="alert alert-danger alert-dismissable" role="alert">
+          <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4><%= pluralize(@publication.errors.count, "error") %> prohibited this publication from being saved:</h4>
+
+          <ul>
+            <% @publication.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :title, class: "col-sm-2 control-label" %>
+      <div class="col-sm-10">
+        <%= f.text_field :title, class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :year, class: "col-sm-2 control-label" %>
+      <div class="col-sm-10">
+        <%= f.number_field :year, class: "form-control" %>
+      </div>
+    </div><div class="form-group">
+      <%= f.label :volume, class: "col-sm-2 control-label" %>
+      <div class="col-sm-10">
+        <%= f.number_field :volume, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="row">
+    <%= f.label :page , 'Page from:', class: "col-sm-2 control-label" %>
+      
+    <div class="form-group col-xs-4">
+      <div class="col-sm-12">
+        <%= f.number_field :page, class: "form-control", placeholder: "from" %>
+      </div>
+    </div>
+
+    <%= f.label :pageend, ' to:', class: "col-sm-2 control-label" %>
+    <div class="form-group col-xs-4">
+
+      <div class="col-sm-12">
+        <%= f.number_field :pageend, class: "form-control", placeholder: "to" %>
+      </div>
+    </div>
+
+    </div>
+
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label"> Authors </label>
+      <div class="col-sm-10">
+        <select name="user[user_id][]" class="selectpicker form-control" multiple>
+          <% @users.each do |user| %>
+              <option value="<%= user.id %>"><%= user.email %></option>
+          <% end %>
+        </select>
+
+      </div>
+    </div>
+
+
+
+<!-- 
+    <div class="form-group">
+                              <label class="control-label" >آپلود گزارش</label>
+                              <%#= f.file_field :document ,class: "form-control spinner" %>
+                              <!-- <input type="password" class="form-control spinner" placeholder="Password"> -->
+                         <!--   </div> -->
+                            
+
+    <div class="form-group">
+      <%= f.label :journal_id, 'Journal_Confrence', class: "col-sm-2 control-label" %>
+      <div class="col-sm-10">
+        <%= f.select(:journal_id, @journals.map { |p| [p.name, p.id] },{prompt: 'Select a Journal_Confrence'}, { class: 'form-control'}) %>
+      </div>
+    </div> 
+
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label"> Documents </label>
+      
+      <div class="col-sm-10 fileinput fileinput-new" data-provides="fileinput">
+          
+          <div>
+              <span class="btn default btn-file">
+                  <span class="fileinput-new"> Publication upload </span>
+                  <span class="fileinput-exists"> setting </span>
+                  <%= f.file_field :document, as: :file %>
+              </span>
+              <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput">
+                  Remove </a>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+    </div>
+<% end %>
+
+
+
+<script>
+  $(document).ready(function () {
+    <% @user_ids = [] %>
+    <%
+    @publication.users.each do |user|
+    @user_ids.push(user.id)
+    end
+    %>
+    $('.selectpicker').val(<%= @user_ids %>);
+    $('.selectpicker').selectpicker('refresh');
+  });
+</script>
